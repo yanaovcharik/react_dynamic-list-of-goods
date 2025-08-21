@@ -7,17 +7,36 @@ import { Good } from './types/Good';
 
 export const App: React.FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const loadAll = async () => {
-    setGoods(await getAll());
+    try {
+      setGoods(await getAll());
+      setError(null);
+    } catch (err) {
+      setGoods([]);
+      setError('Failed to load goods');
+    }
   };
 
   const load5First = async () => {
-    setGoods(await get5First());
+    try {
+      setGoods(await get5First());
+      setError(null);
+    } catch (err) {
+      setGoods([]);
+      setError('Failed to load goods');
+    }
   };
 
   const loadRed = async () => {
-    setGoods(await getRedGoods());
+    try {
+      setGoods(await getRedGoods());
+      setError(null);
+    } catch (err) {
+      setGoods([]);
+      setError('Failed to load goods');
+    }
   };
 
   return (
@@ -36,6 +55,7 @@ export const App: React.FC = () => {
         Load red goods
       </button>
 
+      {error && <p className="error">{error}</p>}
       <GoodsList goods={goods} />
     </div>
   );
